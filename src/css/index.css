@@ -1,0 +1,50 @@
+body{
+    margin: 0px !important;
+}
+
+#header{
+    height: 50px;
+    background-color: #4267b3;
+    color: white;
+}
+
+.project{
+    height: 40px;
+    margin-top: 10px;
+    border-bottom-width: 1px;
+    border-top-width: 1px;
+    border-color: black;
+    border-style: solid;
+}
+
+.centerText{
+     text-align: center;
+     vertical-align: middle;
+     line-height: 50px;
+ }
+
+.centerText2{
+    text-align: center;
+    vertical-align: middle;
+    line-height: 40px;
+}
+
+.projectLeader{
+
+}
+
+.projectDescription{
+
+}
+
+.projectTagColor{
+
+}
+
+.green{
+    background-color: green;
+}
+
+.projectStartDate{
+
+}
