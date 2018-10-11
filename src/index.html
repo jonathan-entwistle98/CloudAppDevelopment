@@ -39,25 +39,25 @@
             </div>
             <div id="newProject" class="container tab-pane fade"><br>
                 <div>
-                    <form action="/action_page.php">
+                    <form method="GET" action="https://3cgbagl498.execute-api.eu-west-2.amazonaws.com/default/createUser">
                         <div class="form-group">
-                            <label for="projectName">Project Name:</label>
-                            <input type="text" class="form-control" id="projectName" placeholder="Enter Project Name" name="projectName">
+                            <label for="name">Project Name:</label>
+                            <input type="text" class="form-control" id="name" placeholder="Enter Project Name" name="name">
                         </div>
                         <div class="form-group">
-                            <label for="projectDescription">Project Description:</label>
-                            <textarea class="form-control" rows="5" id="projectDescription" placeholder="Enter Project Description" name="projectDescription"></textarea>
+                            <label for="description">Project Description:</label>
+                            <textarea class="form-control" rows="5" id="description" placeholder="Enter Project Description" name="description"></textarea>
                         </div>
 
                         <div class="form-group">
-                            <label for="assignedPeople">Who should do this?</label>
-                            <select id="assignedPeople" class="selectpicker" multiple>
+                            <label for="leader">Who should do this?</label>
+                            <select id="leader" class="selectpicker" multiple name="leader">
                             </select>
                         </div>
 
                         <div class="form-group">
-                            <label for="projectTags">Tags:</label>
-                            <select id="projectTags" class="selectpicker" multiple>
+                            <label for="status">Tags:</label>
+                            <select id="status" class="selectpicker" multiple name="status">
                                 <option value="red">Red</option>
                                 <option value="yellow">Yellow</option>
                                 <option value="green">Green</option>
@@ -84,6 +84,8 @@
         $(document).ready(function() {
             $('.selectpicker').selectpicker();
         });
+
+
     </script>
 </body>
 </html>

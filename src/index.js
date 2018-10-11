@@ -7,7 +7,7 @@ import People from './js/people.js';
 const projectContainer = document.getElementById("container");
 ReactDOM.render(<App />, projectContainer);
 
-const usersContainer = document.getElementById("assignedPeople")
+const usersContainer = document.getElementById("leader")
 ReactDOM.render(<Users />, usersContainer);
 
 const peopleContainer = document.getElementById("people")
