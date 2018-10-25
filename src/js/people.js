@@ -8,7 +8,7 @@ class People extends Component {
         this.state = {
             peopleObject: []
         }
-        this.deleteUser = this.deleteUser.bind(this);
+        // this.deleteUser = this.deleteUser.bind(this);
     }
 
     componentDidMount(){
@@ -16,6 +16,18 @@ class People extends Component {
             this.setState({
                 peopleObject: response
             });
+        });
+    }
+
+    deleteUser(userIDParam){
+        $.ajax({
+            type: "GET",
+            url: "https://05a2ou2437.execute-api.eu-west-2.amazonaws.com/default/deleteUser?userID="+userIDParam,
+            dataType: "json",
+            success: function(data) {
+                console.log("DeleteAjax!");
+                console.log(data);
+            }
         });
     }
 
@@ -65,10 +77,10 @@ class People extends Component {
                         {this.state.peopleObject["data"]["Items"][i]["role"]}
                     </div>
                     <div className="permissionLevel centerText2 col-md-1">
-                        <button class="btn btn-success deleteAndEditButtons">Edit</button>
+                        <button className="btn btn-success deleteAndEditButtons">Edit</button>
                     </div>
                     <div className="permissionLevel centerText2 col-md-1">
-                        <button onClick={() => {deleteUser(this.state.peopleObject["data"]["Items"][i]["userID"])}} class="btn btn-danger deleteAndEditButtons">Delete</button>
+                        <button value={this.state.peopleObject["data"]["Items"][i]["userID"]} onClick={() => this.deleteUser} className="btn btn-danger deleteAndEditButtons">Delete</button>
                     </div>
                 </div>
             );

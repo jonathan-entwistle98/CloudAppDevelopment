@@ -151,17 +151,17 @@
             });
         }
 
-        function deleteUser(userIDParam){
-            $.ajax({
-                type: "GET",
-                url: "https://05a2ou2437.execute-api.eu-west-2.amazonaws.com/default/deleteUser?userID="+userIDParam,
-                dataType: "json",
-                success: function(data) {
-                    console.log("DeleteAjax!");
-                    console.log(data);
-                }
-            });
-        }
+        // function deleteUser(userIDParam){
+        //     $.ajax({
+        //         type: "GET",
+        //         url: "https://05a2ou2437.execute-api.eu-west-2.amazonaws.com/default/deleteUser?userID="+userIDParam,
+        //         dataType: "json",
+        //         success: function(data) {
+        //             console.log("DeleteAjax!");
+        //             console.log(data);
+        //         }
+        //     });
+        // }
 
         $(document).ready(function() {
             $('.selectpicker').selectpicker();
