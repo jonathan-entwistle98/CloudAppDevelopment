@@ -29,6 +29,51 @@ body{
     line-height: 40px;
 }
 
+.horizontalAlign{
+    display: inline;
+}
+
+.horizontalFullName{
+    display: inline;
+    width: auto;
+}
+
+#addNewUserForm{
+    background-color: lightgrey;
+    padding-top: 13px;
+    padding-bottom: 15px;
+    padding-left: 5px;
+    padding-right: 10px;
+}
+
+#logOutButton{
+    display: none;
+}
+
+#contentSection{
+    display: none;
+}
+
+.deleteAndEditButtons{
+    bottom: 3px;
+    right: 4px;
+    position: relative;
+}
+
+#role{
+    width: auto;
+}
+
+.submitAlign{
+    display: inline;
+    margin-left: 10px;
+}
+
+.marginForm{
+    margin-right: 10px;
+    margin-top: 10px;
+}
+
 .projectLeader{
 
 }
@@ -43,8 +88,15 @@ body{
 
 .green{
     background-color: green;
+    height:100%;
 }
 
-.projectStartDate{
+.orange{
+    background-color: orange;
+    height:100%;
+}
 
+.red{
+    background-color: red;
+    height:100%;
 }

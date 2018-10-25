@@ -2,7 +2,14 @@
 <html>
 <head>
     <title>Project Management</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/css/bootstrap-select.min.css">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css" />
 
+    <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.11.1/jquery-ui.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/js/bootstrap-select.min.js"></script>
 </head>
 <body>
     <div id="header" class="row">
@@ -11,13 +18,20 @@
             Project Management
         </div>
         <div class="col-md-2"></div>
-        <div id="username" class="centerText col-md-2">
-            Username
+        <div id="login" class="centerText col-md-2">
+            <button id="logInButton">Log In</button>
+            <button id="logOutButton">Log Out</button>
         </div>
 
     </div>
+    <div id="loginForm" title="loginForm" hidden="hidden" class="row">
+        <div class="col-md-4"></div>
+        <input type="text" id="uniqueID" placeholder="User ID">
+        <input type="password" id="password">
+        <button onclick="submitLogin()">Log In</button>
+    </div>
 
-    <div>
+    <div id="contentSection">
 
         <ul class="nav nav-tabs" role="tablist">
             <li class="nav-item">
@@ -39,7 +53,7 @@
             </div>
             <div id="newProject" class="container tab-pane fade"><br>
                 <div>
-                    <form method="GET" action="https://3cgbagl498.execute-api.eu-west-2.amazonaws.com/default/createUser">
+                    <form method="GET" action="https://1xi9dx0p17.execute-api.eu-west-2.amazonaws.com/default/createProject">
                         <div class="form-group">
                             <label for="name">Project Name:</label>
                             <input type="text" class="form-control" id="name" placeholder="Enter Project Name" name="name">
@@ -57,10 +71,10 @@
 
                         <div class="form-group">
                             <label for="status">Tags:</label>
-                            <select id="status" class="selectpicker" multiple name="status">
-                                <option value="red">Red</option>
-                                <option value="yellow">Yellow</option>
-                                <option value="green">Green</option>
+                            <select id="status" class="selectpicker" name="status">
+                                <option value="red">Not yet started</option>
+                                <option value="yellow">Dev In progress</option>
+                                <option value="green">Testing In progress</option>
                             </select>
                         </div>
                         <button type="submit" class="btn btn-primary">Submit</button>
@@ -73,14 +87,82 @@
 
     </div>
 
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/css/bootstrap-select.min.css">
 
-    <script src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/js/bootstrap-select.min.js"></script>
 
     <script>
+
+        $(function () {
+            $( "#loginForm" ).dialog({
+                autoOpen: false
+            });
+            //If no cookie, login button available
+            if(getCookieValue("username") == "") {
+                $("#logInButton").click(function () {
+                    $("#loginForm").dialog('open');
+                });
+            }else{
+                document.getElementById("logInButton").style.display = "none";
+                document.getElementById("logOutButton").style.display = "inline";
+                document.getElementById("contentSection").style.display = "inline";
+            }
+        });
+
+        $("#logOutButton").click(function () {
+            document.cookie = "username=; expires=Fri, 12 Oct 2018 12:00:00 UTC; path=/";
+            document.cookie = "password=; expires=Fri, 12 Oct 2018 12:00:00 UTC; path=/";
+            document.cookie = "role=; expires=Fri, 12 Oct 2018 12:00:00 UTC; path=/";
+            location.reload();
+        });
+
+        function getCookieValue(a) {
+            var b = document.cookie.match('(^|;)\\s*' + a + '\\s*=\\s*([^;]+)');
+            return b ? b.pop() : '';
+        }
+
+        function submitLogin(){
+            var usernameValue = document.getElementById("uniqueID").value;
+            var passwordValue = document.getElementById("password").value;
+            var credentialsCorrect = false;
+
+            $.ajax({
+                type: "GET",
+                url: "https://fkcoaovot5.execute-api.eu-west-2.amazonaws.com/default/getUsers",
+                dataType: "json",
+                success: function(data) {
+                    console.log("Success!");
+
+                    for(var i=0; i<data["Count"]; i++){
+                        console.log(data["Items"][i]["userID"]);
+                        if(usernameValue == data["Items"][i]["userID"]){
+                            if(passwordValue == data["Items"][i]["password"]){
+                                document.cookie = "username="+usernameValue+"; expires=Thu, 19 Dec 2019 12:00:00 UTC; path=/";
+                                document.cookie = "password="+passwordValue+"; expires=Thu, 19 Dec 2019 12:00:00 UTC; path=/";
+                                document.cookie = "role="+data["Items"][i]["role"]+"; expires=Thu, 19 Dec 2019 12:00:00 UTC; path=/";
+                                location.reload();
+                                credentialsCorrect = true;
+                            }
+                        }
+                    }
+                    if(!credentialsCorrect){
+                        alert("Incorrect UserID/Password");
+                    }
+                    console.log(data);
+                }
+            });
+        }
+
+        function deleteUser(userIDParam){
+            $.ajax({
+                type: "GET",
+                url: "https://05a2ou2437.execute-api.eu-west-2.amazonaws.com/default/deleteUser?userID="+userIDParam,
+                dataType: "json",
+                success: function(data) {
+                    console.log("DeleteAjax!");
+                    console.log(data);
+                }
+            });
+        }
+
         $(document).ready(function() {
             $('.selectpicker').selectpicker();
         });
