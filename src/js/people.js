@@ -19,16 +19,16 @@ class People extends Component {
         });
     }
 
-    deleteUser(userIDParam){
+    deleteUser(event){
         $.ajax({
             type: "GET",
-            url: "https://05a2ou2437.execute-api.eu-west-2.amazonaws.com/default/deleteUser?userID="+userIDParam,
+            url: "https://05a2ou2437.execute-api.eu-west-2.amazonaws.com/default/deleteUser?userID="+event.target.value,
             dataType: "json",
             success: function(data) {
-                console.log("DeleteAjax!");
-                console.log(data);
+                console.log("success!");
             }
         });
+        location.reload();
     }
 
     render(){
@@ -80,7 +80,7 @@ class People extends Component {
                         <button className="btn btn-success deleteAndEditButtons">Edit</button>
                     </div>
                     <div className="permissionLevel centerText2 col-md-1">
-                        <button value={this.state.peopleObject["data"]["Items"][i]["userID"]} onClick={() => this.deleteUser} className="btn btn-danger deleteAndEditButtons">Delete</button>
+                        <button onClick={this.deleteUser} value={this.state.peopleObject["data"]["Items"][i]["userID"]} className="btn btn-danger deleteAndEditButtons">Delete</button>
                     </div>
                 </div>
             );
