@@ -43,23 +43,34 @@ class Project extends Component {
             statusText = "Not yet started";
         }
         return (
-            <div className="project row">
-                <div className="projectLeader centerText2 col-md-2">
-                    {this.props.value["name"]}
+            <div className="card row">
+                <div className="card-header">
+                    <a className="card-link" data-toggle="collapse" href="#collapseOne">
+                    <div className="project">
+                        <div className="projectLeader centerText2 col-md-2">
+                            {this.props.value["name"]}
+                        </div>
+                        <div className="projectDescription centerText2 col-md-4">
+                            {this.props.value["description"]}
+                        </div>
+                        <div className={this.props.value["status"] + ' centerText2  col-md-2'}>
+                            <h5><b>
+                            {statusText}
+                            </b></h5>
+                        </div>
+                        <div className="projectStartDate centerText2 col-md-3">
+                            Last Edited: {moment(date).fromNow()}
+                        </div>
+                        <div className="permissionLevel centerText2 col-md-1">
+                            <button onClick={this.deleteProject} value={this.props.value["name"]} className={"btn btn-danger deleteAndEditButtons " + (this.hideForm ? 'show' : 'hidden')}>Delete</button>
+                        </div>
+                    </div>
+                    </a>
                 </div>
-                <div className="projectDescription centerText2 col-md-4">
-                    {this.props.value["description"]}
-                </div>
-                <div className={this.props.value["status"] + ' centerText2  col-md-2'}>
-                    <h5><b>
-                    {statusText}
-                    </b></h5>
-                </div>
-                <div className="projectStartDate centerText2 col-md-3">
-                    Last Edited: {moment(date).fromNow()}
-                </div>
-                <div className="permissionLevel centerText2 col-md-1">
-                    <button onClick={this.deleteProject} value={this.props.value["name"]} className={"btn btn-danger deleteAndEditButtons " + (this.hideForm ? 'show' : 'hidden')}>Delete</button>
+                <div id="collapseOne" className="collapse show" data-parent="#accordion">
+                    <div className="card-body">
+                        Lorem ipsum..
+                    </div>
                 </div>
             </div>
         );
