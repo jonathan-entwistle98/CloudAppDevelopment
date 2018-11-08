@@ -53,7 +53,7 @@
             </div>
             <div id="newProject" class="container tab-pane fade"><br>
                 <div>
-                    <form method="GET" action="https://1xi9dx0p17.execute-api.eu-west-2.amazonaws.com/default/createProject">
+                    <form id="createProjectForm" target="_blank" method="GET" action="https://1xi9dx0p17.execute-api.eu-west-2.amazonaws.com/default/createProject">
                         <div class="form-group">
                             <label for="name">Project Name:</label>
                             <input type="text" class="form-control" id="name" placeholder="Enter Project Name" name="name">
@@ -73,7 +73,7 @@
                             <label for="status">Tags:</label>
                             <select id="status" class="selectpicker" name="status">
                                 <option value="red">Not yet started</option>
-                                <option value="yellow">Dev In progress</option>
+                                <option value="orange">Dev In progress</option>
                                 <option value="green">Testing In progress</option>
                             </select>
                         </div>
@@ -106,6 +106,19 @@
                 document.getElementById("contentSection").style.display = "inline";
             }
         });
+
+        // $("#createProjectForm").submit(function(){
+        //
+        //     var $form = $('#createProjectForm');
+        //     $form.submit(function(){
+        //         $.post($(this).attr('action'), $(this).serialize(), function(response){
+        //             // do something here on success
+        //         },'json');
+        //         location.reload();
+        //         return false;
+        //     });
+        //
+        // });
 
         $("#logOutButton").click(function () {
             document.cookie = "username=; expires=Fri, 12 Oct 2018 12:00:00 UTC; path=/";
@@ -150,18 +163,6 @@
                 }
             });
         }
-
-        // function deleteUser(userIDParam){
-        //     $.ajax({
-        //         type: "GET",
-        //         url: "https://05a2ou2437.execute-api.eu-west-2.amazonaws.com/default/deleteUser?userID="+userIDParam,
-        //         dataType: "json",
-        //         success: function(data) {
-        //             console.log("DeleteAjax!");
-        //             console.log(data);
-        //         }
-        //     });
-        // }
 
         $(document).ready(function() {
             $('.selectpicker').selectpicker();

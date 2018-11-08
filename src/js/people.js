@@ -29,19 +29,14 @@ class People extends Component {
             }
         });
         location.reload();
+        return false;
     }
 
     render(){
 
         if(this.state.peopleObject["data"] == undefined) {
-            // console.log("#######");
-            // console.dir(this.state.peopleObject["data"]);
-            // console.log("#######");
             return null;
         }
-        // console.log("++++++");
-        // console.dir(this.state.peopleObject["data"]["Count"]);
-        // console.log("++++++");
 
         var numPeople = 5;
         var people = [];
