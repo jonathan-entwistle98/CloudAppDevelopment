@@ -6,10 +6,11 @@ class People extends Component {
     constructor(){
         super();
         this.state = {
-            peopleObject: []
+            peopleObject: [],
         }
-        // this.deleteUser = this.deleteUser.bind(this);
     }
+
+    hideform;
 
     componentDidMount(){
         axios.get('https://fkcoaovot5.execute-api.eu-west-2.amazonaws.com/default/getUsers').then( response => {
@@ -17,6 +18,7 @@ class People extends Component {
                 peopleObject: response
             });
         });
+        this.hideAddNewUserForm();
     }
 
     deleteUser(event){
@@ -28,8 +30,34 @@ class People extends Component {
                 console.log("success!");
             }
         });
+        window.setTimeout(1000);
         location.reload();
         return false;
+    }
+
+    createUser(event){
+        var queryString = $('#addNewUserForm').serialize();
+        console.log("queryString is: https://6qpjv26bl6.execute-api.eu-west-2.amazonaws.com/default/createUser?" + queryString);
+        $.ajax({
+            type: "GET",
+            url: "https://6qpjv26bl6.execute-api.eu-west-2.amazonaws.com/default/createUser?"+queryString,
+            dataType: "json",
+            success: function(data) {
+                console.log("success!");
+            }
+        });
+        window.setTimeout(1000);
+        location.reload();
+        return false;
+    }
+
+    hideAddNewUserForm(){
+        console.log("role cookieValue is: " + getCookieValue("role"));
+        if(getCookieValue("role") != "admin") {
+            this.hideform = false;
+        }else{
+            this.hideform = true;
+        }
     }
 
     render(){
@@ -41,7 +69,7 @@ class People extends Component {
         var numPeople = 5;
         var people = [];
         people.push(
-            <form method="GET" action="https://6qpjv26bl6.execute-api.eu-west-2.amazonaws.com/default/createUser" id="addNewUserForm" className="horizontalAlign">
+            <form id="addNewUserForm" className={"horizontalAlign " + (this.hideForm ? 'show' : 'hidden')} onLoad={(e) => this.hideAddNewUserForm(e)} onSubmit={(e) => {this.createUser(); e.preventDefault();}}>
                 <div className="form-group horizontalAlign">
                     <label className="horizontalAlign marginForm" htmlFor="name">Add New User:</label>
                     <input type="text" className="form-control horizontalFullName marginForm" id="newPerson" placeholder="Full Name" name="name" />
@@ -57,7 +85,19 @@ class People extends Component {
                     </select>
                 </div>
                 <button type="submit" className="btn btn-primary submitAlign">Submit</button>
-            </form>
+            </form>,
+            <div class="project row">
+                <div class="assignedProjects centerText2 col-md-3">
+                    <b>User ID</b>
+                </div>
+                <div class="firstAndLastNames centerText2 col-md-3">
+                    <b>User Name</b>
+                </div>
+                <div class="permissionLevel centerText2 col-md-4">
+                    <b>User Role</b>
+                </div>
+            </div>
+
         )
         for(var i=0; i<this.state.peopleObject["data"]["Count"]; i++) {
             people.push(
@@ -72,10 +112,10 @@ class People extends Component {
                         {this.state.peopleObject["data"]["Items"][i]["role"]}
                     </div>
                     <div className="permissionLevel centerText2 col-md-1">
-                        <button className="btn btn-success deleteAndEditButtons">Edit</button>
+                        <button className={"btn btn-success deleteAndEditButtons " + (this.hideForm ? 'show' : 'hidden')}>Edit</button>
                     </div>
                     <div className="permissionLevel centerText2 col-md-1">
-                        <button onClick={this.deleteUser} value={this.state.peopleObject["data"]["Items"][i]["userID"]} className="btn btn-danger deleteAndEditButtons">Delete</button>
+                        <button onClick={this.deleteUser} value={this.state.peopleObject["data"]["Items"][i]["userID"]} className={"btn btn-danger deleteAndEditButtons " + (this.hideForm ? 'show' : 'hidden')}>Delete</button>
                     </div>
                 </div>
             );

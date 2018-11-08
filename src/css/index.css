@@ -8,6 +8,14 @@ body{
     color: white;
 }
 
+.show{
+    display: none;
+}
+
+.hidden{
+    display: inline;
+}
+
 .project{
     height: 40px;
     margin-top: 10px;

@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import Project from "./project";
 import axios from 'axios';
+import moment from "moment";
 
 class Projects extends Component {
 
@@ -34,7 +35,25 @@ class Projects extends Component {
         }
         return (
             <div id="projects">
-                {projects}
+                <div className="project row">
+                    <div className="projectLeader centerText2 col-md-2">
+                        <b>Project Name</b>
+                    </div>
+                    <div className="projectDescription centerText2 col-md-4">
+                        <b>Project Description</b>
+                    </div>
+                    <div className='centerText2  col-md-2'>
+                        <h5><b>
+                            Project Status
+                        </b></h5>
+                    </div>
+                    <div className="projectStartDate centerText2 col-md-3">
+                        <b>Last Edited Date</b>
+                    </div>
+                </div>
+                <div id="accordion">
+                    {projects}
+                </div>
             </div>
         );
     }
