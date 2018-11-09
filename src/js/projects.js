@@ -29,8 +29,13 @@ class Projects extends Component {
         console.log("------");
         var projects = [];
         for(var i=0; i<this.state.returnedObject["data"]["Count"]; i++) {
+
+            let props = {
+                returnedObject:this.state.returnedObject["data"]["Items"][i],
+                objectListPosition:i+1
+            }
             projects.push(
-                <Project value={this.state.returnedObject["data"]["Items"][i]}/>
+                <Project value={props}/>
             );
         }
         return (

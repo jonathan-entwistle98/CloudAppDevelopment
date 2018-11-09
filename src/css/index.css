@@ -68,6 +68,11 @@ body{
     position: relative;
 }
 
+.collapse{
+    display: none;
+    overflow: hidden;
+}
+
 #role{
     width: auto;
 }
