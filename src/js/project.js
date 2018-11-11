@@ -3,28 +3,40 @@ import moment from 'moment';
 
 class Project extends Component {
 
-    hideform;
+    hideForm;
     ones;
     tens;
     teens;
-
-    componentDidMount() {
-        this.hideAddNewUserForm();
-    }
 
     constructor(props) {
         super(props);
         this.ones = ['','one','two','three','four','five','six','seven','eight','nine'];
         this.tens = ['','','twenty','thirty','forty','fifty','sixty','seventy','eighty','ninety'];
         this.teens = ['ten','eleven','twelve','thirteen','fourteen','fifteen','sixteen','seventeen','eighteen','nineteen'];
+        this.hideAddNewUserForm();
     }
 
+    createProject(formName){
+        var queryString = $('#createProjectForm+formName').serialize();
+        $.ajax({
+            type: "GET",
+            url: "https://1xi9dx0p17.execute-api.eu-west-2.amazonaws.com/default/createProject?"+queryString,
+            dataType: "json",
+            success: function(data) {
+            }
+        });
+        window.setTimeout(1000);
+        location.reload();
+        return false;
+    }
+
+
     hideAddNewUserForm(){
-        console.log("role cookieValue is: " + getCookieValue("role"));
+        console.log("role cookieValueProj is: " + getCookieValue("role"));
         if(getCookieValue("role") != "admin") {
-            this.hideform = false;
+            this.hideForm = false;
         }else{
-            this.hideform = true;
+            this.hideForm = true;
         }
     }
 
@@ -68,6 +80,28 @@ class Project extends Component {
         else return this.convert_millions(num);
     }
 
+    editProject(event){
+        document.getElementById("createProjectForm").classList.remove("hidden");
+        var splitArray = event.target.value.split(',');
+        document.getElementById("name").value = splitArray[0];
+        document.getElementById("description").value = splitArray[1];
+        document.getElementById("status").value = splitArray[3];
+        var selectedIndex = null;
+
+        if(document.getElementById("status").value = "red"){
+            selectedIndex = 0;
+        }else if(document.getElementById("status").value = "orange") {
+            selectedIndex = 1;
+        }else if(document.getElementById("status").value = "green") {
+            selectedIndex = 2;
+        }
+        console.log("Status value is: " + document.getElementById("status").value);
+        console.log("selected Index is: " + selectedIndex);
+        var status = document.getElementById("status");
+        status.options[status.options.selectedIndex].selected = true;
+
+    }
+
     deleteProject(event){
         $.ajax({
             type: "GET",
@@ -85,6 +119,12 @@ class Project extends Component {
     render() {
         var date = new Date(this.props.value["returnedObject"]["timedate"]);
         var statusText = "";
+        var projectInfoArray = [];
+        projectInfoArray[0] = this.props.value["returnedObject"]["name"];
+        projectInfoArray[1] = this.props.value["returnedObject"]["description"];
+        projectInfoArray[2] = this.props.value["returnedObject"]["status"];
+        projectInfoArray[3] = moment(date).fromNow();
+
         if(this.props.value["returnedObject"]["status"] == "green"){
             statusText = "Testing In Progress";
         }else if(this.props.value["returnedObject"]["status"] == "orange"){
@@ -92,6 +132,9 @@ class Project extends Component {
         }else if(this.props.value["returnedObject"]["status"] == "red"){
             statusText = "Not yet started";
         }
+
+        console.log("hideForm11 is: " + this.hideForm);
+
         return (
             <div>
                 <div className="card row">
@@ -105,12 +148,15 @@ class Project extends Component {
                                 {this.props.value["returnedObject"]["description"]}
                             </div>
                             <div className={this.props.value["returnedObject"]["status"] + ' centerText2  col-md-2'}>
-                                <h5><b>
+                                <h5><b style={{color: 'white'}}>
                                 {statusText}
                                 </b></h5>
                             </div>
-                            <div className="projectStartDate centerText2 col-md-3">
-                                Last Edited: {moment(date).fromNow()}
+                            <div className="projectStartDate centerText2 col-md-2">
+                                {moment(date).fromNow()}
+                            </div>
+                            <div className="permissionLevel centerText2 col-md-1">
+                                <button onClick={this.editProject} value={projectInfoArray} className={"btn btn-success editProjectButtons " + (this.hideForm ? 'show' : 'hidden')}>Edit</button>
                             </div>
                             <div className="permissionLevel centerText2 col-md-1">
                                 <button onClick={this.deleteProject} value={this.props.value["returnedObject"]["name"]} className={"btn btn-danger deleteAndEditButtons " + (this.hideForm ? 'show' : 'hidden')}>Delete</button>
@@ -121,7 +167,11 @@ class Project extends Component {
                 </div>
                 <div id={"collapse"+this.convert(this.props.value["objectListPosition"])} className="collapse" data-parent="#accordion" style={{height: 0 + 'px'}}>
                     <div className="card-body">
-                        {this.props.value["returnedObject"]["name"]} {this.props.value["returnedObject"]["description"]} {this.props.value["returnedObject"]["status"]} {moment(date).fromNow()}
+                        <div>{"Project Name: " + this.props.value["returnedObject"]["name"]}</div>
+                        <div>{"Project Description: " + this.props.value["returnedObject"]["description"]}</div>
+                        <div>{"Project Status: " + this.props.value["returnedObject"]["status"]}</div>
+                        <div>{"Assigned Developers: " + this.props.value["returnedObject"]["leader"]}</div>
+                        <div>{"Created on: " + date.toLocaleDateString()}</div>
                     </div>
                 </div>
             </div>

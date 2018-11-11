@@ -10,7 +10,7 @@ class People extends Component {
         }
     }
 
-    hideform;
+    hideForm;
 
     componentDidMount(){
         axios.get('https://fkcoaovot5.execute-api.eu-west-2.amazonaws.com/default/getUsers').then( response => {
@@ -54,9 +54,9 @@ class People extends Component {
     hideAddNewUserForm(){
         console.log("role cookieValue is: " + getCookieValue("role"));
         if(getCookieValue("role") != "admin") {
-            this.hideform = false;
+            this.hideForm = false;
         }else{
-            this.hideform = true;
+            this.hideForm = true;
         }
     }
 
@@ -66,6 +66,8 @@ class People extends Component {
             return null;
         }
 
+        console.log("hideForm variable is: " + this.hideForm)
+
         var numPeople = 5;
         var people = [];
         people.push(
@@ -74,10 +76,10 @@ class People extends Component {
                     <label className="horizontalAlign marginForm" htmlFor="name">Add New User:</label>
                     <input type="text" className="form-control horizontalFullName marginForm" id="newPerson" placeholder="Full Name" name="name" />
                     <input type="number" className="form-control horizontalFullName marginForm" id="newPersonID" placeholder="ID Number" name="userID" />
-                    <input type="password" className="form-control horizontalFullName marginForm" id="newPersonPassword" placeholder="Password" name="password" />
+                    <input type="password" className="form-control horizontalFullName marginForm addUserPassword" id="newPersonPassword" placeholder="Password" name="password" />
                 </div>
                 <div id="roleContainer" className="form-group horizontalAlign">
-                    <select id="role" className="horizontalAlign" name="role">
+                    <select id="role" className="horizontalAlign form-control" name="role">
                         <option value="" disabled selected>Select role</option>
                         <option value="admin">Admin</option>
                         <option value="developer">Developer</option>
@@ -86,14 +88,14 @@ class People extends Component {
                 </div>
                 <button type="submit" className="btn btn-primary submitAlign">Submit</button>
             </form>,
-            <div class="project row">
-                <div class="assignedProjects centerText2 col-md-3">
+            <div className="project row">
+                <div className="assignedProjects centerText2 col-md-3">
                     <b>User ID</b>
                 </div>
-                <div class="firstAndLastNames centerText2 col-md-3">
+                <div className="firstAndLastNames centerText2 col-md-3">
                     <b>User Name</b>
                 </div>
-                <div class="permissionLevel centerText2 col-md-4">
+                <div className="permissionLevel centerText2 col-md-4">
                     <b>User Role</b>
                 </div>
             </div>

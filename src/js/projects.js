@@ -20,6 +20,10 @@ class Projects extends Component {
         });
     }
 
+    showCreateProjectForm(){
+        document.getElementById("createProjectForm").classList.remove("hidden");
+    }
+
     render(){
         if(this.state.returnedObject["data"] == undefined) {
             return null;
@@ -52,8 +56,11 @@ class Projects extends Component {
                             Project Status
                         </b></h5>
                     </div>
-                    <div className="projectStartDate centerText2 col-md-3">
-                        <b>Last Edited Date</b>
+                    <div className="projectStartDate centerText2 col-md-2">
+                        <b>Last Edited</b>
+                    </div>
+                    <div className="projectStartDate centerText2 col-md-2">
+                        <button id="createNewProjectButton" className="btn btn-primary" onClick={this.showCreateProjectForm}>Create New Project</button>
                     </div>
                 </div>
                 <div id="accordion">

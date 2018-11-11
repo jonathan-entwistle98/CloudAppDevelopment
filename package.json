@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "webpack-dev-server --open --mode development --port 3000",
+    "deploy": "aws s3 sync dist/ s3://cloud-application-development-cw1",
     "build": "webpack"
   },
   "author": "",

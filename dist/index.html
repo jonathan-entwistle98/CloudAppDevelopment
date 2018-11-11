@@ -19,14 +19,13 @@
         </div>
         <div class="col-md-2"></div>
         <div id="login" class="centerText col-md-2">
-            <button class="btn btn-danger deleteAndEditButtons" id="logInButton">Log In</button>
-            <button class="btn btn-danger deleteAndEditButtons" id="logOutButton">Log Out</button>
+            <button id="logInButton">Log In</button>
+            <button id="logOutButton">Log Out</button>
         </div>
 
     </div>
-    <div id="loginForm" title="Log In" hidden="hidden" class="row">
+    <div id="loginForm" title="loginForm" hidden="hidden" class="row">
         <div class="col-md-4"></div>
-        <div>An admin login is userId: 007, password: Goldeneye</div>
         <input type="text" id="uniqueID" placeholder="User ID">
         <input type="password" id="password">
         <button onclick="submitLogin()">Log In</button>
@@ -36,7 +35,7 @@
 
         <ul class="nav nav-tabs" role="tablist">
             <li class="nav-item">
-                <a class="nav-link active" data-toggle="tab" href="#projects">Projects</a>
+                <a class="nav-link active" data-toggle="tab" href="#home">Home</a>
             </li>
             <li id="peopleTab" class="nav-item">
                 <a class="nav-link" data-toggle="tab" href="#people">People</a>
@@ -45,8 +44,8 @@
 
         <!-- Tab panes -->
         <div class="tab-content">
-            <div id="projects" class="container tab-pane active"><br>
-                    <h3>Projects</h3>
+            <div id="home" class="container tab-pane active"><br>
+                <h3>Projects</h3>
                 <div>
                     <form id="createProjectForm" class="hidden" action="#" onsubmit="return createProject(this)">
                         <div class="form-group">
@@ -59,7 +58,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="leader">Assigned Contributors: </label>
+                            <label for="leader">Who should do this?</label>
                             <select id="leader" class="selectpicker" multiple name="leader">
                             </select>
                         </div>
@@ -104,22 +103,7 @@
         });
 
         function createProject(event){
-
-            var queryName = document.getElementById("name").value;
-            var queryDescription = document.getElementById("description").value;
-            var queryTags = document.getElementById("status").value;
-            var contributorsStr = "";
-            var formElement = document.getElementById("createProjectForm");
-            for (i=0;i<formElement.leader.options.length;i++) {
-                if (formElement.leader.options[i].selected) {
-                    contributorsStr = contributorsStr + formElement.leader.options[i].value + "-";
-                }
-            }
-
-            var queryString = "name=" + queryName + "&description=" + queryDescription + "&leader=" + contributorsStr + "&status=" + queryTags;
-
-            // var queryString = $('#createProjectForm').serialize();
-            console.log("querystring is: "+ queryString);
+            var queryString = $('#createProjectForm').serialize();
             $.ajax({
                 type: "GET",
                 url: "https://1xi9dx0p17.execute-api.eu-west-2.amazonaws.com/default/createProject?"+queryString,
@@ -177,5 +161,5 @@
         }
 
     </script>
-</body>
+<script type="text/javascript" src="main.js"></script></body>
 </html>
