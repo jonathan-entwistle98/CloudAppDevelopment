@@ -132,9 +132,6 @@
                         url: "https://jw33jclele.execute-api.eu-west-2.amazonaws.com/default/deleteProject?name=" + queryName,
                         dataType: "json",
                         success: function (data) {
-                        },
-                        error: function(XMLHttpRequest, textStatus, errorThrown) {
-                            alert("Status: " + textStatus); alert("Error: " + errorThrown);
                         }
                     });
                 }
@@ -145,9 +142,6 @@
                     url: "https://1xi9dx0p17.execute-api.eu-west-2.amazonaws.com/default/createProject?"+queryString,
                     dataType: "json",
                     success: function(data) {
-                    },
-                    error: function(XMLHttpRequest, textStatus, errorThrown) {
-                        alert("Status: " + textStatus); alert("Error: " + errorThrown);
                     }
                 });
                 window.setTimeout(1000);
@@ -244,9 +238,6 @@
                         if(!credentialsCorrect){
                             alert("Incorrect UserID/Password");
                         }
-                    },
-                    error: function(XMLHttpRequest, textStatus, errorThrown) {
-                        alert("Status: " + textStatus); alert("Error: " + errorThrown);
                     }
                 });
             }
