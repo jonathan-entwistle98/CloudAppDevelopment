@@ -7,6 +7,7 @@ class Project extends Component {
     ones;
     tens;
     teens;
+    multipleContributorsOnly;
 
     constructor(props) {
         super(props);
@@ -16,6 +17,19 @@ class Project extends Component {
         this.hideAddNewUserForm();
     }
 
+    setContributorsNames(projectInfoArray){
+         var multipleContributors = "";
+         multipleContributors = projectInfoArray[2].split("-");
+
+        this.multipleContributorsOnly = [];
+        for (var j=0; j<multipleContributors.length-1; j++){
+            this.multipleContributorsOnly += (multipleContributors[j]);
+            if(j!=multipleContributors.length-2){
+                this.multipleContributorsOnly += ", ";
+            }
+        }
+    }
+
     createProject(formName){
         var queryString = $('#createProjectForm+formName').serialize();
         $.ajax({
@@ -23,6 +37,9 @@ class Project extends Component {
             url: "https://1xi9dx0p17.execute-api.eu-west-2.amazonaws.com/default/createProject?"+queryString,
             dataType: "json",
             success: function(data) {
+            },
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+                alert("Status: " + textStatus); alert("Error: " + errorThrown);
             }
         });
         window.setTimeout(1000);
@@ -30,10 +47,8 @@ class Project extends Component {
         return false;
     }
 
-
     hideAddNewUserForm(){
-        console.log("role cookieValueProj is: " + getCookieValue("role"));
-        if(getCookieValue("role") != "admin") {
+        if(getCookieValue("role") == "developer") {
             this.hideForm = false;
         }else{
             this.hideForm = true;
@@ -82,24 +97,33 @@ class Project extends Component {
 
     editProject(event){
         document.getElementById("createProjectForm").classList.remove("hidden");
+        document.cookie = "deleteProject=yes; expires=Thu, 19 Dec 2019 12:00:00 UTC; path=/";
         var splitArray = event.target.value.split(',');
         document.getElementById("name").value = splitArray[0];
         document.getElementById("description").value = splitArray[1];
         document.getElementById("status").value = splitArray[3];
+
+        var multipleContributors = [];
+        multipleContributors = splitArray[2].split("-");
+
+        var multipleContributorsOnly = [];
+        for (var j=0; j<multipleContributors.length-1; j++){
+            multipleContributorsOnly.push(multipleContributors[j]);
+        }
+        $("#leader").val(multipleContributorsOnly);
+
         var selectedIndex = null;
 
-        if(document.getElementById("status").value = "red"){
+        if(splitArray[3] == "red"){
             selectedIndex = 0;
-        }else if(document.getElementById("status").value = "orange") {
+        }else if(splitArray[3] == "orange") {
             selectedIndex = 1;
-        }else if(document.getElementById("status").value = "green") {
+        }else if(splitArray[3] == "green") {
             selectedIndex = 2;
         }
-        console.log("Status value is: " + document.getElementById("status").value);
-        console.log("selected Index is: " + selectedIndex);
         var status = document.getElementById("status");
         status.options[status.options.selectedIndex].selected = true;
-
+        $('.selectpicker').selectpicker('refresh');
     }
 
     deleteProject(event){
@@ -108,7 +132,9 @@ class Project extends Component {
             url: "https://jw33jclele.execute-api.eu-west-2.amazonaws.com/default/deleteProject?name="+event.target.value,
             dataType: "json",
             success: function(data) {
-                console.log("success!");
+            },
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+                alert("Status: " + textStatus); alert("Error: " + errorThrown);
             }
         });
         window.setTimeout(1000);
@@ -122,8 +148,10 @@ class Project extends Component {
         var projectInfoArray = [];
         projectInfoArray[0] = this.props.value["returnedObject"]["name"];
         projectInfoArray[1] = this.props.value["returnedObject"]["description"];
-        projectInfoArray[2] = this.props.value["returnedObject"]["status"];
-        projectInfoArray[3] = moment(date).fromNow();
+        projectInfoArray[2] = this.props.value["returnedObject"]["leader"];
+        projectInfoArray[3] = this.props.value["returnedObject"]["status"];
+        projectInfoArray[4] = moment(date).fromNow();
+        this.setContributorsNames(projectInfoArray);
 
         if(this.props.value["returnedObject"]["status"] == "green"){
             statusText = "Testing In Progress";
@@ -133,15 +161,13 @@ class Project extends Component {
             statusText = "Not yet started";
         }
 
-        console.log("hideForm11 is: " + this.hideForm);
-
         return (
-            <div>
+            <div className="projectContainer">
                 <div className="card row">
                     <div className="card-header">
                         <a className="card-link collapsed" data-toggle="collapse" href={"#collapse" + this.convert(this.props.value["objectListPosition"])}>
                         <div className="project">
-                            <div className="projectLeader centerText2 col-md-2">
+                            <div className="projectNames projectLeader centerText2 col-md-2">
                                 {this.props.value["returnedObject"]["name"]}
                             </div>
                             <div className="projectDescription centerText2 col-md-4">
@@ -155,10 +181,10 @@ class Project extends Component {
                             <div className="projectStartDate centerText2 col-md-2">
                                 {moment(date).fromNow()}
                             </div>
-                            <div className="permissionLevel centerText2 col-md-1">
+                            <div className="centerText2 col-md-1">
                                 <button onClick={this.editProject} value={projectInfoArray} className={"btn btn-success editProjectButtons " + (this.hideForm ? 'show' : 'hidden')}>Edit</button>
                             </div>
-                            <div className="permissionLevel centerText2 col-md-1">
+                            <div className="centerText2 col-md-1">
                                 <button onClick={this.deleteProject} value={this.props.value["returnedObject"]["name"]} className={"btn btn-danger deleteAndEditButtons " + (this.hideForm ? 'show' : 'hidden')}>Delete</button>
                             </div>
                         </div>
@@ -167,11 +193,11 @@ class Project extends Component {
                 </div>
                 <div id={"collapse"+this.convert(this.props.value["objectListPosition"])} className="collapse" data-parent="#accordion" style={{height: 0 + 'px'}}>
                     <div className="card-body">
-                        <div>{"Project Name: " + this.props.value["returnedObject"]["name"]}</div>
-                        <div>{"Project Description: " + this.props.value["returnedObject"]["description"]}</div>
-                        <div>{"Project Status: " + this.props.value["returnedObject"]["status"]}</div>
-                        <div>{"Assigned Developers: " + this.props.value["returnedObject"]["leader"]}</div>
-                        <div>{"Created on: " + date.toLocaleDateString()}</div>
+                        <div><b>Project Name:</b> {this.props.value["returnedObject"]["name"]}</div>
+                        <div><b>Project Description:</b> {this.props.value["returnedObject"]["description"]}</div>
+                        <div><b>Project Status:</b> {this.props.value["returnedObject"]["status"]}</div>
+                        <div><b>Assigned Developers (UserIDs):</b> {this.multipleContributorsOnly}</div>
+                        <div><b>Last Edited On: </b> {date.toLocaleDateString()}</div>
                     </div>
                 </div>
             </div>

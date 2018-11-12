@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import App from './js/app.js';
 import Users from './js/users.js';
 import People from './js/people.js';
+import axios from "axios";
 
 const projectContainer = document.getElementById("container");
 ReactDOM.render(<App />, projectContainer);

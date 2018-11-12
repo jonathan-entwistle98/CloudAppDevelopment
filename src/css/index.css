@@ -8,8 +8,33 @@ body{
     color: white;
 }
 
+#newPersonID{
+    width: 140px;
+}
+
 #newPersonPassword{
-    width: 150px;
+    width: 140px;
+}
+
+#searchProjects{
+    display: inline;
+    width: auto;
+}
+
+#searchPeople{
+    display: inline;
+    width: auto;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+#searchByDiv{
+    position: relative;
+    top: 5px;
+}
+
+#searchProjectsLabel{
+    margin-left: 20px;
 }
 
 .show{
@@ -17,7 +42,11 @@ body{
 }
 
 .hidden{
-    display: inline;
+    display: none;
+}
+
+.hidden2{
+    display: none !important;
 }
 
 .editProjectButtons{
@@ -41,6 +70,7 @@ body{
  }
 
 .centerText2{
+    height: 40px;
     text-align: center;
     vertical-align: middle;
     line-height: 40px;
@@ -65,6 +95,7 @@ body{
     padding-right: 10px;
 }
 
+
 #logOutButton{
     display: none;
 }
@@ -77,6 +108,12 @@ body{
     bottom: 2px;
     position: relative;
     padding: 5px 7px;
+}
+
+#createNewUserButton{
+    top: 2px;
+    left: 10px;
+    position: relative;
 }
 
 #role{

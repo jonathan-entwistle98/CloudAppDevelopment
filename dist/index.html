@@ -1,165 +1,237 @@
 <!DOCTYPE HTML>
 <html>
-<head>
-    <title>Project Management</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/css/bootstrap-select.min.css">
-    <link rel="stylesheet" href="https://code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css" />
+    <head>
+        <title>Project Management</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/css/bootstrap-select.min.css">
+        <link rel="stylesheet" href="https://code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css" />
 
-    <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
-    <script src="https://code.jquery.com/ui/1.11.1/jquery-ui.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/js/bootstrap-select.min.js"></script>
-</head>
-<body>
-    <div id="header" class="row">
-        <div class="col-md-4"></div>
-        <div id="title" class="centerText col-md-4">
-            Project Management
+        <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+        <script src="https://code.jquery.com/ui/1.11.1/jquery-ui.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/js/bootstrap-select.min.js"></script>
+    </head>
+    <body>
+        <div id="header" class="row">
+            <div class="col-md-4"></div>
+            <div id="title" class="centerText col-md-4">
+                Project Management
+            </div>
+            <div class="col-md-2"></div>
+            <div id="login" class="centerText col-md-2">
+                <button class="btn btn-danger deleteAndEditButtons" id="logInButton">Log In</button>
+                <button class="btn btn-danger deleteAndEditButtons" id="logOutButton">Log Out</button>
+            </div>
+
         </div>
-        <div class="col-md-2"></div>
-        <div id="login" class="centerText col-md-2">
-            <button id="logInButton">Log In</button>
-            <button id="logOutButton">Log Out</button>
+        <div id="loginForm" title="Log In" hidden="hidden" class="row">
+            <div class="col-md-4"></div>
+            <div>An admin login is userId: 007, password: Goldeneye</div>
+            <input type="text" class="form-control" id="uniqueID" placeholder="User ID">
+            <input type="password" class="form-control" id="password" placeholder="Password">
+            <button onclick="submitLogin()">Log In</button>
         </div>
 
-    </div>
-    <div id="loginForm" title="loginForm" hidden="hidden" class="row">
-        <div class="col-md-4"></div>
-        <input type="text" id="uniqueID" placeholder="User ID">
-        <input type="password" id="password">
-        <button onclick="submitLogin()">Log In</button>
-    </div>
+        <div id="contentSection">
 
-    <div id="contentSection">
+            <ul class="nav nav-tabs" role="tablist">
+                <li id="projectsTab" class="nav-item active">
+                    <a id="projectsTabA" class="nav-link" data-toggle="tab" href="#projects" aria-expanded="true">Projects</a>
+                </li>
+                <li id="peopleTab" class="nav-item">
+                    <a id="peopleTabA" class="nav-link" data-toggle="tab" href="#people" aria-expanded="false">People</a>
+                </li>
+            </ul>
 
-        <ul class="nav nav-tabs" role="tablist">
-            <li class="nav-item">
-                <a class="nav-link active" data-toggle="tab" href="#home">Home</a>
-            </li>
-            <li id="peopleTab" class="nav-item">
-                <a class="nav-link" data-toggle="tab" href="#people">People</a>
-            </li>
-        </ul>
+            <!-- Tab panes -->
+            <div class="tab-content">
+                <div id="projects" class="container tab-pane active"><br>
+                    <label for="filterProjects">Filter Projects: </label>
+                    <select id="filterProjects" class="selectpicker" onchange="filterProjects(this)">
+                        <option selected disabled>Choose here</option>
+                        <option value="red">Not yet started</option>
+                        <option value="orange">Dev In progress</option>
+                        <option value="green">Testing In progress</option>
+                    </select>
+                    <button type="button" class="btn btn-danger" onclick="removeFilters('projectContainer')">Remove Filters</button>
+                    <label id="searchProjectsLabel" for="searchProjects">Search by Project Name: </label>
+                    <input type="text" class="form-control" id="searchProjects">
+                    <button type="button" class="btn btn-primary" onclick="searchProjects()">Search</button>
+                    <div>
+                        <form id="createProjectForm" class="hidden" action="#" onsubmit="return createProject(this)">
+                            <div class="form-group">
+                                <label for="name">Project Name:</label>
+                                <input type="text" class="form-control" id="name" placeholder="Enter Project Name" name="name">
+                            </div>
+                            <div class="form-group">
+                                <label for="description">Project Description:</label>
+                                <textarea class="form-control" rows="5" id="description" placeholder="Enter Project Description" name="description"></textarea>
+                            </div>
 
-        <!-- Tab panes -->
-        <div class="tab-content">
-            <div id="home" class="container tab-pane active"><br>
-                <h3>Projects</h3>
-                <div>
-                    <form id="createProjectForm" class="hidden" action="#" onsubmit="return createProject(this)">
-                        <div class="form-group">
-                            <label for="name">Project Name:</label>
-                            <input type="text" class="form-control" id="name" placeholder="Enter Project Name" name="name">
-                        </div>
-                        <div class="form-group">
-                            <label for="description">Project Description:</label>
-                            <textarea class="form-control" rows="5" id="description" placeholder="Enter Project Description" name="description"></textarea>
-                        </div>
+                            <div class="form-group">
+                                <label for="leader">Assigned Contributors: </label>
+                                <select id="leader" class="selectpicker" multiple name="leader">
+                                </select>
+                            </div>
 
-                        <div class="form-group">
-                            <label for="leader">Who should do this?</label>
-                            <select id="leader" class="selectpicker" multiple name="leader">
-                            </select>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="status">Tags:</label>
-                            <select id="status" class="selectpicker" name="status">
-                                <option value="red">Not yet started</option>
-                                <option value="orange">Dev In progress</option>
-                                <option value="green">Testing In progress</option>
-                            </select>
-                        </div>
-                        <button type="submit" class="btn btn-primary">Submit</button>
-                    </form>
+                            <div class="form-group">
+                                <label for="status">Tags:</label>
+                                <select id="status" class="selectpicker" name="status">
+                                    <option value="red">Not yet started</option>
+                                    <option value="orange">Dev In progress</option>
+                                    <option value="green">Testing In progress</option>
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                            <button type="button" class="btn btn-danger" onclick="hideCreateUserForm()">Cancel</button>
+                        </form>
+                    </div>
+                    <div id="container"></div>
                 </div>
-                <div id="container"></div>
+                <div id="people" class="container tab-pane fade">
+                </div>
             </div>
-            <div id="people" class="container tab-pane fade">
-            </div>
+
         </div>
 
-    </div>
 
 
+        <script>
 
-    <script>
-
-        $(function () {
-            $( "#loginForm" ).dialog({
-                autoOpen: false
-            });
-            //If no cookie, login button available
-            if(getCookieValue("username") == "") {
-                $("#logInButton").click(function () {
-                    $("#loginForm").dialog('open');
+            $(function () {
+                $( "#loginForm" ).dialog({
+                    autoOpen: false
                 });
-            }else{
-                document.getElementById("logInButton").style.display = "none";
-                document.getElementById("logOutButton").style.display = "inline";
-                document.getElementById("contentSection").style.display = "inline";
-            }
-        });
-
-        function createProject(event){
-            var queryString = $('#createProjectForm').serialize();
-            $.ajax({
-                type: "GET",
-                url: "https://1xi9dx0p17.execute-api.eu-west-2.amazonaws.com/default/createProject?"+queryString,
-                dataType: "json",
-                success: function(data) {
+                //If no cookie, login button available
+                if(getCookieValue("username") == "") {
+                    $("#logInButton").click(function () {
+                        $("#loginForm").dialog('open');
+                    });
+                }else{
+                    document.getElementById("logInButton").style.display = "none";
+                    document.getElementById("logOutButton").style.display = "inline";
+                    document.getElementById("contentSection").style.display = "inline";
                 }
             });
-            window.setTimeout(1000);
-            location.reload();
-            return false;
-        }
 
-        $("#logOutButton").click(function () {
-            document.cookie = "username=; expires=Fri, 12 Oct 2018 12:00:00 UTC; path=/";
-            document.cookie = "password=; expires=Fri, 12 Oct 2018 12:00:00 UTC; path=/";
-            document.cookie = "role=; expires=Fri, 12 Oct 2018 12:00:00 UTC; path=/";
-            location.reload();
-        });
-
-        function getCookieValue(a) {
-            var b = document.cookie.match('(^|;)\\s*' + a + '\\s*=\\s*([^;]+)');
-            return b ? b.pop() : '';
-        }
-
-        function submitLogin(){
-            var usernameValue = document.getElementById("uniqueID").value;
-            var passwordValue = document.getElementById("password").value;
-            var credentialsCorrect = false;
-
-            $.ajax({
-                type: "GET",
-                url: "https://fkcoaovot5.execute-api.eu-west-2.amazonaws.com/default/getUsers",
-                dataType: "json",
-                success: function(data) {
-                    console.log("Success!");
-
-                    for(var i=0; i<data["Count"]; i++){
-                        console.log(data["Items"][i]["userID"]);
-                        if(usernameValue == data["Items"][i]["userID"]){
-                            if(passwordValue == data["Items"][i]["password"]){
-                                document.cookie = "username="+usernameValue+"; expires=Thu, 19 Dec 2019 12:00:00 UTC; path=/";
-                                document.cookie = "password="+passwordValue+"; expires=Thu, 19 Dec 2019 12:00:00 UTC; path=/";
-                                document.cookie = "role="+data["Items"][i]["role"]+"; expires=Thu, 19 Dec 2019 12:00:00 UTC; path=/";
-                                location.reload();
-                                credentialsCorrect = true;
-                            }
+            function createProject(event){
+                var queryName = document.getElementById("name").value;
+                var queryDescription = document.getElementById("description").value;
+                var queryTags = document.getElementById("status").value;
+                var contributorsStr = "";
+                var formElement = document.getElementById("createProjectForm");
+                for (i=0;i<formElement.leader.options.length;i++) {
+                    if (formElement.leader.options[i].selected) {
+                        contributorsStr = contributorsStr + formElement.leader.options[i].value + "-";
+                    }
+                }
+                if(document.cookie.indexOf('yes')!=-1) {
+                    console.log(1);
+                    $.ajax({
+                        type: "GET",
+                        url: "https://jw33jclele.execute-api.eu-west-2.amazonaws.com/default/deleteProject?name=" + queryName,
+                        dataType: "json",
+                        success: function (data) {
+                        },
+                        error: function(XMLHttpRequest, textStatus, errorThrown) {
+                            alert("Status: " + textStatus); alert("Error: " + errorThrown);
                         }
-                    }
-                    if(!credentialsCorrect){
-                        alert("Incorrect UserID/Password");
-                    }
-                    console.log(data);
+                    });
                 }
-            });
-        }
 
-    </script>
-<script type="text/javascript" src="main.js"></script></body>
-</html>
+                var queryString = "name=" + queryName + "&description=" + queryDescription + "&leader=" + contributorsStr + "&status=" + queryTags;
+                $.ajax({
+                    type: "GET",
+                    url: "https://1xi9dx0p17.execute-api.eu-west-2.amazonaws.com/default/createProject?"+queryString,
+                    dataType: "json",
+                    success: function(data) {
+                    },
+                    error: function(XMLHttpRequest, textStatus, errorThrown) {
+                        alert("Status: " + textStatus); alert("Error: " + errorThrown);
+                    }
+                });
+                window.setTimeout(1000);
+                location.reload();
+                return false;
+            }
+
+            function hideCreateUserForm() {
+                document.getElementById("createProjectForm").classList.add("hidden");
+            }
+
+            function filterProjects(selectBox){
+                removeFilters("projectContainer");
+                var selectedFilter = selectBox.value;
+
+                var wrongStatuses1 = [];
+                var wrongStatuses2 = [];
+                if(selectBox.value == "green") {
+                    wrongStatuses1 = document.getElementsByClassName("red");
+                    wrongStatuses2 = document.getElementsByClassName("orange");
+                }else if(selectBox.value == "orange"){
+                    wrongStatuses1 = document.getElementsByClassName("red");
+                    wrongStatuses2 = document.getElementsByClassName("green");
+                }else if(selectBox.value == "red"){
+                    wrongStatuses1 = document.getElementsByClassName("orange");
+                    wrongStatuses2 = document.getElementsByClassName("green");
+                }
+
+                var divToHide1 = wrongStatuses1[0].parentNode.parentNode.parentNode.parentNode.parentNode;
+                var divToHide2 = wrongStatuses2[0].parentNode.parentNode.parentNode.parentNode.parentNode;
+
+                for(var j=0; j<wrongStatuses1.length; j++){
+                    wrongStatuses1[j].parentNode.parentNode.parentNode.parentNode.parentNode.classList.add("hidden");
+                }
+                for(var k=0; k<wrongStatuses2.length; k++){
+                    wrongStatuses2[k].parentNode.parentNode.parentNode.parentNode.parentNode.classList.add("hidden");
+                }
+
+            }
+
+            function searchProjects(){
+                removeFilters("projectContainer");
+                var searchText = document.getElementById("searchProjects").value.toLowerCase();
+
+                var projectNames = [];
+                var projectNamesDivs = document.getElementsByClassName("projectNames");
+                for(var k=0; k<projectNamesDivs.length; k++){
+                    if(!projectNamesDivs[k].innerHTML.toLowerCase().includes(searchText)){
+                        projectNamesDivs[k].parentNode.parentNode.parentNode.parentNode.parentNode.classList.add("hidden");
+                    }
+                }
+            }
+
+            function removeFilters(classNames){
+                for(var k=0; k<document.getElementsByClassName(classNames).length; k++){
+                    document.getElementsByClassName(classNames)[k].classList.remove("hidden");
+                }
+            }
+
+            $("#logOutButton").click(function () {
+                document.cookie = "username=; expires=Fri, 12 Oct 2018 12:00:00 UTC; path=/";
+                document.cookie = "password=; expires=Fri, 12 Oct 2018 12:00:00 UTC; path=/";
+                document.cookie = "role=; expires=Fri, 12 Oct 2018 12:00:00 UTC; path=/";
+                location.reload();
+            });
+
+            function getCookieValue(a) {
+                var b = document.cookie.match('(^|;)\\s*' + a + '\\s*=\\s*([^;]+)');
+                return b ? b.pop() : '';
+            }
+
+            function submitLogin(){
+                var usernameValue = document.getElementById("uniqueID").value;
+                var passwordValue = document.getElementById("password").value;
+                var credentialsCorrect = false;
+
+                $.ajax({
+                    type: "GET",
+                    url: "https://fkcoaovot5.execute-api.eu-west-2.amazonaws.com/default/getUsers",
+                    dataType: "json",
+                    success: function(data) {
+
+                        for(var i=0; i<data["Count"]; i++){
+                            if(usernameValue == data["Items"][i]["userID"]){
+                                if(passwordValue == data["Items"][i]["password"]){
+                                    document.cookie = "username="+usernameValue+"; expires=Thu, 19 Dec 2019 12:00:00 UTC; path=/";
+                                    document.cookie = "password="+passwordValue+"; expires=Thu, 19 Dec 2019 

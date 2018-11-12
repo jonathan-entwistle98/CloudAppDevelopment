@@ -10,6 +10,7 @@ class Projects extends Component {
         this.state = {
             returnedObject: []
         }
+
     }
 
     componentDidMount(){
@@ -22,15 +23,14 @@ class Projects extends Component {
 
     showCreateProjectForm(){
         document.getElementById("createProjectForm").classList.remove("hidden");
+        $('#createProjectForm').trigger("reset");
+        document.cookie = "deleteProject=no; expires=Thu, 19 Dec 2019 12:00:00 UTC; path=/";
     }
 
     render(){
         if(this.state.returnedObject["data"] == undefined) {
             return null;
         }
-        console.log("------");
-        console.dir(this.state.returnedObject);
-        console.log("------");
         var projects = [];
         for(var i=0; i<this.state.returnedObject["data"]["Count"]; i++) {
 
