@@ -53,9 +53,6 @@ class People extends Component {
             url: "https://05a2ou2437.execute-api.eu-west-2.amazonaws.com/default/deleteUser?userID="+event.target.value,
             dataType: "json",
             success: function(data) {
-            },
-            error: function(XMLHttpRequest, textStatus, errorThrown) {
-                alert("Status: " + textStatus); alert("Error: " + errorThrown);
             }
         });
         window.setTimeout(1000);
@@ -72,9 +69,6 @@ class People extends Component {
                 url: "https://05a2ou2437.execute-api.eu-west-2.amazonaws.com/default/deleteUser?userID="+userIDToDelete,
                 dataType: "json",
                 success: function(data) {
-                },
-                error: function(XMLHttpRequest, textStatus, errorThrown) {
-                    alert("Status: " + textStatus); alert("Error: " + errorThrown);
                 }
             });
         }
@@ -84,9 +78,6 @@ class People extends Component {
             url: "https://6qpjv26bl6.execute-api.eu-west-2.amazonaws.com/default/createUser?"+queryString,
             dataType: "json",
             success: function(data) {
-            },
-            error: function(XMLHttpRequest, textStatus, errorThrown) {
-                alert("Status: " + textStatus); alert("Error: " + errorThrown);
             }
         });
         window.setTimeout(2000);

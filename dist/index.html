@@ -234,4 +234,23 @@
                             if(usernameValue == data["Items"][i]["userID"]){
                                 if(passwordValue == data["Items"][i]["password"]){
                                     document.cookie = "username="+usernameValue+"; expires=Thu, 19 Dec 2019 12:00:00 UTC; path=/";
-                                    document.cookie = "password="+passwordValue+"; expires=Thu, 19 Dec 2019 
+                                    document.cookie = "password="+passwordValue+"; expires=Thu, 19 Dec 2019 12:00:00 UTC; path=/";
+                                    document.cookie = "role="+data["Items"][i]["role"]+"; expires=Thu, 19 Dec 2019 12:00:00 UTC; path=/";
+                                    location.reload();
+                                    credentialsCorrect = true;
+                                }
+                            }
+                        }
+                        if(!credentialsCorrect){
+                            alert("Incorrect UserID/Password");
+                        }
+                    },
+                    error: function(XMLHttpRequest, textStatus, errorThrown) {
+                        alert("Status: " + textStatus); alert("Error: " + errorThrown);
+                    }
+                });
+            }
+
+        </script>
+    <script type="text/javascript" src="main.js"></script></body>
+</html>

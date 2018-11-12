@@ -37,9 +37,6 @@ class Project extends Component {
             url: "https://1xi9dx0p17.execute-api.eu-west-2.amazonaws.com/default/createProject?"+queryString,
             dataType: "json",
             success: function(data) {
-            },
-            error: function(XMLHttpRequest, textStatus, errorThrown) {
-                alert("Status: " + textStatus); alert("Error: " + errorThrown);
             }
         });
         window.setTimeout(1000);
@@ -132,9 +129,6 @@ class Project extends Component {
             url: "https://jw33jclele.execute-api.eu-west-2.amazonaws.com/default/deleteProject?name="+event.target.value,
             dataType: "json",
             success: function(data) {
-            },
-            error: function(XMLHttpRequest, textStatus, errorThrown) {
-                alert("Status: " + textStatus); alert("Error: " + errorThrown);
             }
         });
         window.setTimeout(1000);
